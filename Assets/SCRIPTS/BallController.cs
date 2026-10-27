@@ -5,55 +5,97 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public float velocidad = 10f;
-    Rigidbody2D _rb;
-    public GameManager manager;
+    public float velocity = 10f;
+    public GameManager gameManager;
 
-    // Start is called before the first frame update
+    Rigidbody2D _rb;
+    float _lastHorizontalDirection = 1f;
+
     void Start()
     {
-        _rb = this.gameObject.GetComponent<Rigidbody2D>();
-
-        Launchball();
+        _rb = GetComponent<Rigidbody2D>();
+        LaunchBall(0);
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-
-        _rb.velocity = _rb.velocity.normalized * velocidad;
-
-    }
-    void Launchball()
-    {
-        bool isRight = false;
-        if (Random.value > 0.5f)
+        if (_rb.velocity.magnitude > velocity)
         {
-            isRight = true;
+            _rb.velocity = _rb.velocity.normalized * velocity;
         }
 
-        float xVelocity = -1;
-        if (isRight == true)
+        if (Mathf.Abs(_rb.velocity.x) >= velocity * 0.3f)
         {
-            xVelocity = 1;
+            _lastHorizontalDirection = Mathf.Sign(_rb.velocity.x);
+        }
+        else
+        {
+            float yDirection = Mathf.Sign(_rb.velocity.y);
+
+            if (yDirection == 0f)
+            {
+                yDirection = 1f;
+            }
+
+            float minX = 0.3f;
+            float y = Mathf.Sqrt(1f - minX * minX);
+
+            _rb.velocity = new Vector2(
+                _lastHorizontalDirection * minX,
+                yDirection * y
+            ) * velocity;
+        }
+    }
+
+    void LaunchBall(int dir)
+    {
+        transform.position = Vector3.zero;
+        if (dir == 0)
+        {
+            _lastHorizontalDirection = Random.value > 0.5f ? 1f : -1f;
+        }
+        else
+        {
+            _lastHorizontalDirection = dir;
         }
 
-        float yVelocity = Random.Range(-1f, 1f);
-        _rb.velocity = new Vector2(xVelocity * xVelocity, yVelocity * yVelocity);
+            float yVelocity = Random.Range(-0.7f, 0.7f);
+
+            _rb.velocity = new Vector2(
+                _lastHorizontalDirection,
+                yVelocity
+            ).normalized * velocity;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            Debug.Log("Ball Hit");
+            if (collision.gameObject.CompareTag("Wall_R"))
+            {
+                Debug.Log("Wall_Right");
+                gameManager.Playernumber1++;
+                LaunchBall(-1);
+            }
+
+            if (collision.gameObject.CompareTag("Wall_L"))
+            {
+                Debug.Log("Wall_Left");
+                gameManager.Playernumber2++;
+                LaunchBall(1);
+
+            }
+
+            gameManager.UpdatePointsText();
+
+        }
+
+
 
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Debug.Log("Ball Hit");
-        manager.Playernumber1++;
-        Debug.Log(manager.Playernumber1);
 
-        
-    }
 
-   
-}
+
 
 
 

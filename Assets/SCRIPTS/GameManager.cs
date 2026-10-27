@@ -21,9 +21,14 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
+    }
+
+    public void UpdatePointsText()
+    {
         Points = Playernumber1 + "|" + Playernumber2;
         marcadorText.text = Points;
-
     }
 
 
