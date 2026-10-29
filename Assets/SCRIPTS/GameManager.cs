@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,7 +30,16 @@ public class GameManager : MonoBehaviour
     {
         Points = Playernumber1 + "|" + Playernumber2;
         marcadorText.text = Points;
-    }
+        if (Playernumber1 == 5)
+        {
+            SceneManager.LoadScene(0);
+        }
 
+        else if (Playernumber2 == 5)
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+    
 
 }
