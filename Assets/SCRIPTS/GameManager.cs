@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     public int Playernumber2;
     string Points;
     public TextMeshProUGUI marcadorText;
+    public AudioClip pointscount;
+    public AudioClip winsound;
+    AudioSource audioSource;
+    
 
     // Start is called before the first frame update
     private void Start()
@@ -28,6 +32,7 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePointsText()
     {
+        
         Points = Playernumber1 + "|" + Playernumber2;
         marcadorText.text = Points;
         if (Playernumber1 == 5)
