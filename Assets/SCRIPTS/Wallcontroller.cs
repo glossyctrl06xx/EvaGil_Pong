@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Wallcontroller : MonoBehaviour
 {
+    public AudioSource Point_L;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,15 @@ public class Wallcontroller : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnCollisionEnter2D (Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("bola")) ;
+        {
+            Point_L.Play();
+        }
+          
+    
     }
 }
