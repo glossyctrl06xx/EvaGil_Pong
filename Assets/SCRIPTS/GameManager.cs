@@ -13,12 +13,17 @@ public class GameManager : MonoBehaviour
     public AudioClip pointscount;
     public AudioClip winsound;
     AudioSource audioSource;
+    public int pointsToWin = 5;
+    public GameObject winpanel;
+
     
 
     // Start is called before the first frame update
     private void Start()
     {
         Debug.Log(Points);
+        Time.timeScale = 1f;
+        audioSource = GetComponent<AudioSource>();
         
 
     }
@@ -32,9 +37,10 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePointsText()
     {
-        
+        string lastPoints = Points;
         Points = Playernumber1 + "|" + Playernumber2;
         marcadorText.text = Points;
+
         if (Playernumber1 == 5)
         {
             SceneManager.LoadScene(0);
@@ -44,7 +50,22 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+
+        if (Playernumber1 >= pointsToWin || Playernumber2 >= pointsToWin)
+        {
+            audioSource.clip = winsound;
+            winpanel.SetActive(true);
+            Time.timeScale = 0f;
+
+        }
+
+        else 
+        { 
+            audioSource.clip = points
+        
+        }
     }
+        
     
 
 }

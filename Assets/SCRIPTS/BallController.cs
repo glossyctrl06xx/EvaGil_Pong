@@ -93,7 +93,7 @@ public class BallController : MonoBehaviour
         gameManager.UpdatePointsText();
 
     }
-
+    void update
 
 
 }
