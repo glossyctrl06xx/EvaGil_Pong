@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,8 +8,12 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 15f; //Speed at which the paddle moves
     public float topheight;
     public float botheight; //Bottom limit of the paddle's movement
+    public float diferencia;
+    public float IAFollowTolerance = 0.5f;
     public bool useArrowKeys = false; //if true, use arrow keys; if false, use W and S keys
-
+    public GameObject ball;
+    public bool IA;
+    public int direccion;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +23,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IA == false)
+        {
         MovePaddle();
- 
+
+        }
+        else 
+        {
+            MovePaddleIA();
+        }
 
 
         
@@ -82,4 +94,22 @@ public class PlayerController : MonoBehaviour
 
 
     }
+    void MovePaddleIA()
+    {
+        int direccion = 0;
+        float diferencia = ball.transform.position.y - transform.position.y;
+
+        if (diferencia > IAFollowTolerance)
+        {
+            direccion = 1;
+        }
+
+        else if (diferencia < IAFollowTolerance)
+        { 
+            direccion = -1;
+        }
+
+        float nuevaY = transform.position.y * (direccion * moveSpeed / 2 * Time.deltaTime);
+    }
+
 }

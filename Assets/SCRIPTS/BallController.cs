@@ -6,12 +6,15 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    public float velocity = 10f;
+    public float ballvelocity = 10f;
     public GameManager gameManager;
     public AudioSource audioSource;
     Rigidbody2D _rb;
     ParticleSystem _particleSystem;
     float _lastHorizontalDirection = 1f;
+    public float velocityMulty = 1;
+    public float timeAlive = 0f;
+    AudioClip AudioClip;
 
     void Start()
     {
@@ -20,15 +23,28 @@ public class BallController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         LaunchBall(0);
     }
+    private void Update()
+    {
+        if (timeAlive > 2f && velocityMulty < 2f)
+        {
+            velocityMulty += 0.25f;
+            ballvelocity *= velocityMulty;
+            timeAlive = 0f;
+        }
+        else
+        {
+            timeAlive += Time.deltaTime;
+        }
+    }
 
     void FixedUpdate()
     {
-        if (_rb.velocity.magnitude > velocity)
+        if (_rb.velocity.magnitude > ballvelocity)
         {
-            _rb.velocity = _rb.velocity.normalized * velocity;
+            _rb.velocity = _rb.velocity.normalized * ballvelocity;
         }
 
-        if (Mathf.Abs(_rb.velocity.x) >= velocity * 0.3f)
+        if (Mathf.Abs(_rb.velocity.x) >= ballvelocity * 0.3f)
         {
             _lastHorizontalDirection = Mathf.Sign(_rb.velocity.x);
         }
@@ -47,9 +63,10 @@ public class BallController : MonoBehaviour
             _rb.velocity = new Vector2(
                 _lastHorizontalDirection * minX,
                 yDirection * y
-            ) * velocity;
+            ) * ballvelocity;
         }
     }
+
 
     void LaunchBall(int dir)
     {
@@ -65,11 +82,13 @@ public class BallController : MonoBehaviour
 
         float yVelocity = Random.Range(-0.7f, 0.7f);
 
-        _rb.velocity = new Vector2(
+        _rb.velocity = new Vector2
+        (
             _lastHorizontalDirection,
             yVelocity
-        ).normalized * velocity;
+        ).normalized * ballvelocity;
     }
+    void MovePaddleIA() { }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -93,7 +112,6 @@ public class BallController : MonoBehaviour
         gameManager.UpdatePointsText();
 
     }
-    void update
 
 
 }

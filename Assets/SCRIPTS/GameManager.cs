@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public int pointsToWin = 5;
     public GameObject winpanel;
 
-    
+
 
     // Start is called before the first frame update
     private void Start()
@@ -24,14 +24,14 @@ public class GameManager : MonoBehaviour
         Debug.Log(Points);
         Time.timeScale = 1f;
         audioSource = GetComponent<AudioSource>();
-        
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
 
     }
 
@@ -59,13 +59,9 @@ public class GameManager : MonoBehaviour
 
         }
 
-        else 
-        { 
-            audioSource.clip = points
-        
-        }
+
     }
-        
-    
+
+
 
 }
